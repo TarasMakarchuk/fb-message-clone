@@ -13,7 +13,7 @@ export class AuthService {
 
   async createUser() {
     return this.userRepository.save({
-      name: 'Test',
+      name: 'Test1',
     });
   }
 }
