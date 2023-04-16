@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
+import { dataSourceOptions } from './db/data-source';
 
 @Module({
   imports: [
@@ -12,11 +13,10 @@ import { UserEntity } from './entity/user.entity';
       envFilePath: './.env',
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('POSTGRES_URI'),
-        autoLoadEntities: true,
-        synchronize: true,
+      useFactory: () => ({
+        ...dataSourceOptions,
+        autoLoadEntities: false,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),

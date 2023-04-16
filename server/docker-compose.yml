@@ -27,10 +27,10 @@ services:
       - /usr/src/app/node_modules
     command: npm run start:dev auth
 
-  server:
+  api:
     build:
       context: ./
-      dockerfile: ./apps/server/Dockerfile
+      dockerfile: apps/api/Dockerfile
     ports:
       - '4000:5000'
     env_file:
@@ -41,7 +41,7 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run start:dev server
+    command: npm run start:dev api
 
   postgres:
     image: postgres

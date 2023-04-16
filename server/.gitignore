@@ -3,7 +3,7 @@
 /node_modules
 .idea
 .env
-db
+/db/data
 
 # Logs
 logs
