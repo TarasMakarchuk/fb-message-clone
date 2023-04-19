@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
 import { PresenceController } from './presence.controller';
 import { PresenceService } from './presence.service';
-import { SharedService } from '@app/shared';
-import { ConfigService } from '@nestjs/config';
+import { SharedModule, SharedService } from '@app/shared';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: './.env',
+    }),
+    SharedModule,
+  ],
   controllers: [PresenceController],
   providers: [PresenceService, SharedService, ConfigService],
 })
