@@ -5,10 +5,7 @@ import { SharedService } from '@app/shared';
 
 @Controller()
 export class AuthController {
-  constructor(
-      private readonly authService: AuthService,
-      private readonly sharedService: SharedService
-  ) {}
+  constructor(private readonly authService: AuthService, private readonly sharedService: SharedService) {}
 
   @MessagePattern({ cmd: 'get-users' })
   async getUser(@Ctx() context: RmqContext) {
