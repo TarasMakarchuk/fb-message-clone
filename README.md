@@ -14,7 +14,7 @@
 ## Description
 The facebook messenger application.
 
-## Installation 
+## Installation
 
 ```bash
 $ npm install
@@ -33,9 +33,13 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Create the migration
+## Create the migration in the Docker container
 ```bash
+# run in the IDE's terminal
 $ npm run build
+$ docker-compose up
+
+# run in the Docker container's terminal
 $ npm rum migration:generate -- apps/auth/src/db/migrations/migrationName
 ```
 
