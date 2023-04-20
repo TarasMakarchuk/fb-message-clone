@@ -13,8 +13,8 @@ import { Module } from '@nestjs/common';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         url: configService.get('POSTGRES_URI'),
-        autoLoadEntities: true,
-        synchronize: true,
+        autoLoadEntities: false,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
