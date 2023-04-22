@@ -32,8 +32,8 @@ export class AuthService {
 
   async register(user: Readonly<NewUserDto>): Promise<UserEntity> {
     const { firstName, lastName, email, password } = user;
-    const existingUser = this.findByEmail(email);
-    if (!existingUser) throw new ConflictException('An account with this email already exists');
+    const existingUser = await this.findByEmail(email);
+    if (existingUser) throw new ConflictException('An account with this email already exists');
 
     const hashedPassword = await this.hashPassword(password);
     const savedUser = await this.userRepository.save({
