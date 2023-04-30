@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { FriendRequestEntity } from '@app/shared/entities/friend-request.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -22,4 +30,10 @@ export class UserEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.creator)
+  friendRequestCreator: FriendRequestEntity[];
+
+  @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.receiver)
+  friendRequestReceiver: FriendRequestEntity[];
 }

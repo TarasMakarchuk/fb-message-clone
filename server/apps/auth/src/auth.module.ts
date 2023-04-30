@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SharedModule, PostgresDbModule, SharedService } from '@app/shared';
+import {
+  SharedModule,
+  PostgresDbModule,
+  SharedService,
+  FriendRequestsRepository,
+  FriendRequestEntity,
+} from '@app/shared';
 import { UserEntity } from '@app/shared/entities/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -26,7 +32,7 @@ import { UsersRepository } from '@app/shared/repositories/users.repository';
     }),
     SharedModule,
     PostgresDbModule,
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, FriendRequestEntity]),
   ],
   controllers: [AuthController],
   providers: [
@@ -43,6 +49,10 @@ import { UsersRepository } from '@app/shared/repositories/users.repository';
     {
       provide: 'SharedServiceInterface',
       useClass: SharedService,
+    },
+    {
+      provide: 'FriendRequestsRepositoryInterface',
+      useClass: FriendRequestsRepository,
     },
   ],
 })
