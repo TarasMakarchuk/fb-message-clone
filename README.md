@@ -32,7 +32,6 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
 ## Create the migration in the Docker container
 ```bash
 # run in the IDE's terminal
