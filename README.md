@@ -19,7 +19,6 @@ The facebook messenger application.
 ```bash
 $ npm install
 ```
-
 ## Running the app
 
 ```bash
