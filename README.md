@@ -47,6 +47,11 @@ $ npm rum migration:generate -- apps/auth/src/db/migrations/migrationName
 $ npm run typeorm -- migration:run
 ```
 
+## Drop the migrations
+```bash
+$ npm run typeorm -- schema:drop
+```
+
 ## Test
 
 ```bash
