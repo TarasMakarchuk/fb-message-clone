@@ -34,6 +34,6 @@ export class UserEntity {
   @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.creator)
   friendRequestCreator: FriendRequestEntity[];
 
-  @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.receiver)
+  @OneToMany(() => FriendRequestEntity, (FriendRequestEntity) => FriendRequestEntity.receiver)
   friendRequestReceiver: FriendRequestEntity[];
 }

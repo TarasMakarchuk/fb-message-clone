@@ -8,19 +8,21 @@ import {
   Post,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { AuthGuard } from '@app/shared';
 import { UserRequest } from '@app/shared/interfaces/user-request.interface';
+import { UserInterceptor } from '@app/shared/interceptors/user.interceptor';
 
 @Controller()
 export class AppController {
   constructor(
-    @Inject('AUTH_SERVICE') private authService: ClientProxy,
-    @Inject('PRESENCE_SERVICE') private presenceService: ClientProxy,
+    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
+    @Inject('PRESENCE_SERVICE') private readonly presenceService: ClientProxy,
   ) {}
 
-  @Get('auth')
+  @Get('users')
   async getUsers() {
     return this.authService.send(
       {
@@ -30,17 +32,8 @@ export class AppController {
     );
   }
 
-  @Post('auth')
-  async createUser() {
-    return this.authService.send(
-      {
-        cmd: 'create-user',
-      },
-      {},
-    );
-  }
-
   @UseGuards(AuthGuard)
+  @UseInterceptors(UserInterceptor)
   @Post('add-friend/:friendId')
   async addFriend(@Req() req: UserRequest, @Param('friendId') friendId: number) {
     if (!req?.user) {
@@ -59,6 +52,7 @@ export class AppController {
   }
 
   @UseGuards(AuthGuard)
+  @UseInterceptors(UserInterceptor)
   @Get('get-friends')
   async getFriends(@Req() req: UserRequest) {
     if (!req?.user) {
