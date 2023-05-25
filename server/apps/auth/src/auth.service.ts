@@ -114,15 +114,20 @@ export class AuthService {
     const creator = await this.findById(userId);
     const receiver = await this.findById(friendId);
 
+    if (creator.id === receiver.id) {
+      throw new BadRequestException("You can't add yourself as a friend");
+    }
+
     return await this.friendRequestsRepository.save({ creator, receiver });
   }
 
   async getFriends(userId: number): Promise<FriendRequestEntity[]> {
     const creator = await this.findById(userId);
 
-    return await this.friendRequestsRepository.findWithRelations({
-      where: [{ creator }, { receiver: creator }],
+    const friends = await this.friendRequestsRepository.findWithRelations({
       relations: ['creator', 'receiver'],
     });
+
+    return friends.filter((friend) => friend.creator.id === creator.id);
   }
 }
