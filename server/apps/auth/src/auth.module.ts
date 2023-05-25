@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './entity/user.entity';
-import { dataSourceOptions } from './db/data-source';
+import {
+  SharedModule,
+  PostgresDbModule,
+  SharedService,
+  FriendRequestsRepository,
+  FriendRequestEntity,
+} from '@app/shared';
+import { UserEntity } from '@app/shared/entities/user.entity';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtGuard } from './guards/jwt.guard';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { UsersRepository } from '@app/shared/repositories/users.repository';
 
 @Module({
   imports: [
@@ -12,17 +22,38 @@ import { dataSourceOptions } from './db/data-source';
       isGlobal: true,
       envFilePath: './.env',
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        ...dataSourceOptions,
-        autoLoadEntities: false,
-        synchronize: false,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: { expiresIn: '365d' },
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    SharedModule,
+    PostgresDbModule,
+    TypeOrmModule.forFeature([UserEntity, FriendRequestEntity]),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    JwtGuard,
+    JwtStrategy,
+    {
+      provide: 'AuthServiceInterface',
+      useClass: AuthService,
+    },
+    {
+      provide: 'UserRepositoryInterface',
+      useClass: UsersRepository,
+    },
+    {
+      provide: 'SharedServiceInterface',
+      useClass: SharedService,
+    },
+    {
+      provide: 'FriendRequestsRepositoryInterface',
+      useClass: FriendRequestsRepository,
+    },
+  ],
 })
 export class AuthModule {}

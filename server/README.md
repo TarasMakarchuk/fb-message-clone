@@ -33,10 +33,17 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Create the migration
+## Work with migrations in the Docker container
 ```bash
+# run in the IDE's terminal
 $ npm run build
-$ npm rum migration:generate -- apps/auth/src/db/migrations/migrationName
+$ docker-compose up
+
+# run in the Docker container's terminal
+$ npm run migration:generate -- apps/auth/src/db/migrations/migrationName
+
+# run in the Docker container's terminal for execute migrations
+$ npm run migration:run 
 ```
 
 ## Run the migrations

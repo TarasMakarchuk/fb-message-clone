@@ -14,12 +14,11 @@
 ## Description
 The facebook messenger application.
 
-## Installation 
+## Installation
 
 ```bash
 $ npm install
 ```
-
 ## Running the app
 
 ```bash
@@ -32,16 +31,24 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
-## Create the migration
+## Create the migration in the Docker container
 ```bash
+# run in the IDE's terminal
 $ npm run build
+$ docker-compose up
+
+# run in the Docker container's terminal
 $ npm rum migration:generate -- apps/auth/src/db/migrations/migrationName
 ```
 
 ## Run the migrations
 ```bash
 $ npm run typeorm -- migration:run
+```
+
+## Drop the migrations
+```bash
+$ npm run typeorm -- schema:drop
 ```
 
 ## Test
